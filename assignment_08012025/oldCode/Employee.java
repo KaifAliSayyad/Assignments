@@ -44,5 +44,8 @@ class Employee{
             else emp.salary += 15000;
         }
 	}
+	void Employee(){
+		
+	}
 
 }
