@@ -14,6 +14,7 @@ abstract class Employee{
 
     public Employee(){
        while(getDetails());
+       employeeCount++;
     }
 
     public boolean getDetails(){
@@ -24,7 +25,6 @@ abstract class Employee{
         String newName = sc.nextLine();
         if(newName.length() == 0){
             System.out.println("Invalid name");
-            sc.close();
             return true;
         }else{
             name = newName;
@@ -33,22 +33,19 @@ abstract class Employee{
         int newAge = sc.nextInt();
         if(newAge < 18){
             System.out.println("Age should be greater than 18!");
-            sc.close();
             return true;
         }else{
             age = newAge;
         }
 
-        System.out.println("Enter salary\t : ");
+        System.out.print("Enter salary\t : ");
         float newSalary = sc.nextFloat();
         if(newSalary < 0){
             System.out.println("Salary cannot be negative.");
-            sc.close();
             return false;
         }else{
             salary = newSalary;
         }
-        sc.close();
 
         return false;
     }

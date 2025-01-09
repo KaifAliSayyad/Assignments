@@ -15,6 +15,7 @@ public class EmployeeManagementApp_corrected {
             switch (choice) {
                 case 1:
                     while(createMenu());
+                    System.out.println("Total employees added : "+employees.length);
                     break;
                 
                 case 2:
