@@ -11,9 +11,9 @@ class Employee{
 	private int id;
 	private static int idCounter = 1;
 	String name;
-	private float salary;
+	protected float salary;
 	private int age;
-	private Designation designation;
+	public Designation designation;
 
 	public Employee(String name, float salary, int age, Designation designation){
 		this.id = idCounter;
