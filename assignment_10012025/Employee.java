@@ -1,5 +1,10 @@
 package emp.assignment;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import emp.exceptions.InvalidAgeException;
+import emp.exceptions.InvalidChoiceException;
+import emp.exceptions.InvalidIdException;
+import emp.exceptions.InvalidSalaryException;
 
 enum Designation{
     CLERK,
@@ -33,22 +38,37 @@ public abstract class Employee{
         }else{
             name = newName;
         }
-        System.out.print("Enter the age\t : ");
-        int newAge = sc.nextInt();
-        if(newAge < 18){
-            System.out.println("Age should be greater than 18!");
+
+
+        try{
+            System.out.print("Enter the age\t : ");
+            int newAge = sc.nextInt();
+        
+            if(newAge < 20 || newAge > 60){
+                throw new InvalidAgeException();
+            }else{
+                age = newAge;
+            }
+        }catch(InputMismatchException e){
+            System.out.println("Please enter numbers only...");
             return true;
-        }else{
-            age = newAge;
+        }catch(InvalidAgeException e){
+            return true;
         }
 
-        System.out.print("Enter salary\t : ");
-        float newSalary = sc.nextFloat();
-        if(newSalary < 0){
-            System.out.println("Salary cannot be negative.");
-            return false;
-        }else{
-            salary = newSalary;
+        try{
+            System.out.print("Enter salary\t : ");
+            float newSalary = sc.nextFloat();
+            if(newSalary < 0){
+                throw new InvalidSalaryException();
+            }else{
+                salary = newSalary;
+            }
+        }catch(InputMismatchException e){
+            System.out.println("Please enter numbers only...");
+            return true;
+        }catch(InvalidSalaryException e){
+            return true;
         }
 
         return false;
