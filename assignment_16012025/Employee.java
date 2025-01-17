@@ -19,10 +19,11 @@ public abstract class Employee{
     private String name;
     protected int age;
     protected Designation designation;
-    float salary;
+    private float salary;
     public static int employeeCount;
     static int minAge;
     static int maxAge;
+    private static boolean isCeoPresent = false;
 
     public Employee(int id, int minAge, int maxAge){
         this.id = id;
@@ -56,7 +57,36 @@ public abstract class Employee{
         System.out.println("____________________________________________");
     }
 
-    public abstract void raiseSalary();
+    protected void setSalary(int salary){
+        this.salary += salary;
+    }
+
+    protected void setBoolean(){
+        isCeoPresent = true;
+    }
+
+    protected static boolean getBoolean(){
+        return isCeoPresent;
+    }
+
+    // public abstract void raiseSalary();
+
+    public void raiseSalary(){
+        switch (this.designation) {
+            case CLERK:
+                this.salary += 2000;
+                break;
+            case PROGRAMMER:
+                this.salary += 5000;
+                break;
+            case MANAGER:
+                this.salary += 15000;
+                break;
+            case CEO:
+                this.salary += 150000;
+                break;
+        }
+    }
 
     public abstract void setMinAge(int age);
     

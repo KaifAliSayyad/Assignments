@@ -68,7 +68,7 @@ public class Menu{
 			try{
 				System.out.print("Enter salary : ");
 				float salary = new Scanner(System.in).nextFloat();
-				if(salary < 0) throw new InvalidSalaryException();
+				if(salary <= 50000) throw new InvalidSalaryException();
 				else return salary;
 			}catch(InvalidSalaryException e){
 

@@ -94,6 +94,14 @@ public class EmployeeManagementApp {
 
     
     public static void raiseSalary(){
+        int startingIndexForDeletion = 0;
+        while(startingIndexForDeletion < 100 && employees[startingIndexForDeletion] == null) startingIndexForDeletion++;
+
+        if(startingIndexForDeletion >= employeeCount){
+            System.out.println("No employees present to raise salary..");
+            return;
+        }
+
         for(Employee emp : employees){
             if(emp != null) emp.raiseSalary();
         }
@@ -101,6 +109,13 @@ public class EmployeeManagementApp {
 
 
     public static void display(){
+        int startingIndexForDeletion = 0;
+        while(startingIndexForDeletion < 100 && employees[startingIndexForDeletion] == null) startingIndexForDeletion++;
+
+        if(startingIndexForDeletion >= employeeCount){
+            System.out.println("No employees present to display..");
+            return;
+        }
         for(Employee emp : employees){
             if(emp != null) Employee.display(emp);
         }
@@ -122,16 +137,16 @@ public class EmployeeManagementApp {
         
             if(type == 1){
                 employees[employeeCount] =  Clerk.getObject(employeeCount+1);
-                employeeCount++;
+                if(employees[employeeCount] != null) employeeCount++;
             }else if(type == 2){
                 employees[employeeCount] =  Programmer.getObject(employeeCount+1);
-                employeeCount++;
+                if(employees[employeeCount] != null) employeeCount++;
             }else if(type == 3){
                 employees[employeeCount] =  Manager.getOjbect(employeeCount+1);
-                employeeCount++;
+                if(employees[employeeCount] != null) employeeCount++;
             }else if(type == 4){
                 employees[employeeCount] = Ceo.getObject(employeeCount+1);
-                employeeCount++;
+                if(employees[employeeCount] != null) employeeCount++;
             }else if(type == 5){
                 return false;
             }else{

@@ -6,15 +6,16 @@ public final class Ceo extends Employee{
     private Ceo(int id){
         super(id, 25, 75);
         designation = Designation.valueOf("CEO");
+        setBoolean();
     }
 
-    public final void raiseSalary(){
-        if(employeeCount == 0){
-            System.out.println("No employees exist to raise salary.");
-            return;
-        }
-        salary += 200000;
-    }
+    // public final void raiseSalary(){
+    //     if(employeeCount == 0){
+    //         System.out.println("No employees exist to raise salary.");
+    //         return;
+    //     }
+    //     setSalary(200000);
+    // }
 
     public final void setMaxAge(int newAge){
         age = newAge;
@@ -26,7 +27,10 @@ public final class Ceo extends Employee{
 
     public static Ceo getObject(int id){
         if(c == null) c = new Ceo(id);
-        else System.out.println("Only one CEO can be created..");
+        else{
+            System.out.println("Only one CEO can be created..");
+            return null;
+        }
         return c;
     }
 }

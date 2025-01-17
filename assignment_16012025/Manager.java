@@ -10,13 +10,13 @@ public final class Manager extends Employee{
         designation = Designation.valueOf("MANAGER");
     }
 
-    public final void raiseSalary(){
-        if(employeeCount == 0){
-            System.out.println("No employees exist to raise salary.");
-            return;
-        }
-        salary += 15000;
-    }
+    // public final void raiseSalary(){
+    //     if(employeeCount == 0){
+    //         System.out.println("No employees exist to raise salary.");
+    //         return;
+    //     }
+    //     setSalary(15000);
+    // }
 
     public final void setMaxAge(int newAge){
         age = newAge;
@@ -27,6 +27,10 @@ public final class Manager extends Employee{
     }
 
     public static Manager getOjbect(int id){
+        if(!getBoolean()){
+            System.out.println("Please create a CEO first..");
+            return null;
+        }
         if(countOfManagers < 10){
             countOfManagers++;
             return new Manager(id);
