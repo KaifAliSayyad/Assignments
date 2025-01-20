@@ -1,9 +1,10 @@
 import java.io.IOException;
-
+import static java.time.temporal.ChronoUnit.SECONDS;
 public abstract class Race {
     private static Biker[] bikers;
     public static int totalDistance;
     private static boolean isStarted = false;
+    private static final Object lock = new Object();
 
     public static int getTotalDistance(){
         return totalDistance;
@@ -28,17 +29,29 @@ public abstract class Race {
     public static void setIsStarted(){
         isStarted = true;
     }
+
+    public static Object getLock(){
+        return lock;
+    }
+
+
     
-    public static void printBikers(){
+    public synchronized static void printBikers(){
         //For clearing the console
         System.out.println("\033\143");
 
-        for(Biker biker : bikers){
-            for(int i = 0 ; i < Math.max(totalDistance - biker.getRemainingDistance(), totalDistance) ; i++){
-                System.out.print(" ");
-            }
-            System.out.println(biker.getName() + "|");
+        for(int i = 0 ; i < totalDistance; i++){
+            System.out.print("- ");
         }
+        
+        System.out.println();
+        for(Biker biker : bikers){
+            for(int i = 0 ; i <  totalDistance - biker.getRemainingDistance() ; i+=2){
+                System.out.print("| ");
+            }
+            System.out.println();
+        }
+
         for(int i = 0 ; i < totalDistance + 10; i++){
             System.out.print("- ");
         }

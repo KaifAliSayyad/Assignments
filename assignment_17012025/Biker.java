@@ -1,11 +1,15 @@
+import java.time.*;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalUnit;
+import static java.time.temporal.ChronoUnit.SECONDS;
 public class Biker extends Race implements Runnable{
-    private long startTime;
-    private long endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private long timeTaken;
     private int speed;
     private int distRemaining;
     private String name;
     private static int index = 0;
-    private long timeTaken;
 
     private Biker(String name){
         this.name = name;
@@ -15,27 +19,31 @@ public class Biker extends Race implements Runnable{
     }
 
     public void run(){
-        startTime = System.currentTimeMillis();
-        while(!Race.getIsStarted()){
-            System.out.println("Waiting for eveyone to start...");
-            Thread.sleep(2000);
+        try{
+
+            synchronized(Race.getLock()){
+                if(!Race.getIsStarted()){
+                    System.out.println("Waiting for eveyone to start...");
+                    Race.getLock().wait();
+                }
+            }
+        }catch(InterruptedException e){
+            System.out.println("Error..");
         }
 
+        startTime = LocalTime.now();
         while(distRemaining > 0){
-            synchronized(this){
                 Race.printBikers();
-            }
             try{
+                distRemaining -= speed;
                 Thread.sleep(1000);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
-            distRemaining -= speed;
-            
         }
 
-        endTime = System.currentTimeMillis();
-        timeTaken = endTime - startTime;
+        endTime = LocalTime.now();
+        timeTaken = SECONDS.between(startTime, endTime);
         distRemaining = 0;
     }
 
@@ -52,11 +60,11 @@ public class Biker extends Race implements Runnable{
         return name;
     }
 
-    public long getStartTime(){
+    public LocalTime getStartTime(){
         return startTime;
     }
 
-    public long getEndTime(){
+    public LocalTime getEndTime(){
         return endTime;
     }
 

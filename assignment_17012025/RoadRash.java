@@ -20,7 +20,7 @@ public class RoadRash {
                     for(int i = 5 ; i > 0 ; i--){
                         System.out.println(i+"...");
                         try{
-                            Thread.sleep(1000);
+                            Thread.sleep((int)(Math.random()*1000));
 
                         }catch(InterruptedException e){
                             System.out.println("Error...");
@@ -44,7 +44,10 @@ public class RoadRash {
             threads[i].start();
         }
 
-        Race.setIsStarted();
+        synchronized(Race.getLock()){
+            Race.setIsStarted();
+            Race.getLock().notifyAll();
+        }
 
         for(int i = 0 ; i < numberOfBikers ; i++){
             try{
