@@ -1,4 +1,5 @@
 package emp.utils;
+import java.util.Scanner; 
 import java.util.*;
 
 import emp.exceptions.InvalidAgeException;
@@ -33,9 +34,8 @@ public class Menu{
 	public static String readName(){
 		while(true){
 			try{
-				System.out.println("Enter name : ");
-				Scanner sc = new Scanner(System.in);
-				String name = sc.nextLine();
+				System.out.print("Enter name : ");
+				String name = new Scanner(System.in).nextLine();
 				if(Patterns.validateName(name)) return name;
 				else{
 					throw new InvalidNameException();
@@ -69,13 +69,33 @@ public class Menu{
 			try{
 				System.out.print("Enter salary : ");
 				float salary = new Scanner(System.in).nextFloat();
-				if(salary < 0) throw new InvalidSalaryException();
+				if(salary <= 50000) throw new InvalidSalaryException();
 				else return salary;
 			}catch(InvalidSalaryException e){
 
 			}catch(InputMismatchException e){
 				System.out.println("Only numbers are allowed in input field...");
 
+			}
+		}
+	}
+
+	public static String readId(Hashtable employees){
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			try{
+				String newId = sc.nextLine();
+				// sc.nextLine();
+				if(newId.length() == 0){
+					System.out.println("Id required!!");
+				}else if(employees.containsKey(newId)){
+					System.out.println("Id already exists!!");
+				}else{
+					// sc.close();
+					return newId;
+				}
+			}catch(InputMismatchException e){
+				e.printStackTrace();
 			}
 		}
 	}
