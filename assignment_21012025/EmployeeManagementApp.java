@@ -21,9 +21,10 @@ public class EmployeeManagementApp {
             System.out.println("2. Display");
             System.out.println("3. Raise Salary");
             System.out.println("4. Delete");
-            System.out.println("5. Exit");
+            System.out.println("5. Search");
+            System.out.println("6. Exit");
             System.out.println("________________________________________");
-            int choice = Menu.readChoice(5);
+            int choice = Menu.readChoice(6);
             switch (choice) {
                 case 1:
                     while(createMenu());
@@ -39,7 +40,10 @@ public class EmployeeManagementApp {
                 case 4:
                     while(delete());
                     break;
-                case 5: 
+                case 5:
+                    while(search());
+                    break;
+                case 6: 
                     System.exit(0);
                     break;
                 default:
@@ -48,12 +52,36 @@ public class EmployeeManagementApp {
         }
     }
 
+    public static boolean search(){
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            System.out.print("Enter the ID of the Employee you want details : ");
+            String id = sc.nextLine();
+            if(employees.containsKey(id)){
+                Employee.display(((Employee)employees.get(id)));
+                return false;
+            }else{
+                System.out.println("ID does not exists!!");
+                return true;
+            }
+        }
+    }
     public static boolean delete(){
         Scanner sc = new Scanner(System.in);
         while(true){
-            System.out.println("Enter the id of the employee you want to delete.\n->");
+            System.out.print("Enter the id of the employee you want to delete : ");
             String id = sc.nextLine();
-            //*************************** */
+            if(employees.containsKey(id)){
+                if(Employee.getDesignation(((Employee)employees.get(id))).equals("CEO")){
+                    System.out.println("Cannot delete CEO!!");
+                    return true;
+                }
+                employees.remove(id);
+                return false;
+            }else{
+                System.out.println("No employee present with ID : "+id);
+                return true;
+            }
         }
     }
 
@@ -76,7 +104,11 @@ public class EmployeeManagementApp {
             System.out.println("No employees present to display.");
             return;
         }
-
+        
+        Set<String> keys = employees.keySet();
+        for(String key : keys){
+            Employee.display(((Employee)employees.get(key)));
+        }
     }
 
 
@@ -102,7 +134,7 @@ public class EmployeeManagementApp {
                 System.out.print("Enter the id of the new Clerk : ");
                 newEmpId = Menu.readId(employees);
                 employees.put(newEmpId, Clerk.getObject(newEmpId));
-                return false;
+                return true;
             }else if(type == 2){
                 if(!Employee.getBoolean()){
                     System.out.println("Please create a CEO first..");
@@ -111,7 +143,7 @@ public class EmployeeManagementApp {
                 System.out.print("Enter the id of the new Programmer : ");
                 newEmpId = Menu.readId(employees);
                 employees.put(newEmpId, Programmer.getObject(newEmpId));
-                return false;
+                return true;
             }else if(type == 3){
                 if(!Employee.getBoolean()){
                     System.out.println("Please create a CEO first..");
@@ -120,12 +152,12 @@ public class EmployeeManagementApp {
                 System.out.print("Enter the id of the new Manager : ");
                 newEmpId = Menu.readId(employees);
                 employees.put(newEmpId, Manager.getObject(newEmpId));
-                return false;
+                return true;
             }else if(type == 4){
                 System.out.print("Enter the id of the new CEO : ");
                 newEmpId = Menu.readId(employees);
                 employees.put(newEmpId, Ceo.getObject(newEmpId));
-                return false;
+                return true;
             }else if(type == 5){
                 return false;
             }else{

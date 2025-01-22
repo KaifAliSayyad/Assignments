@@ -6,6 +6,7 @@ import emp.exceptions.InvalidChoiceException;
 import emp.exceptions.InvalidIdException;
 import emp.exceptions.InvalidSalaryException;
 import emp.utils.Menu;
+import emp.assignment.Designation;
 
 enum Designation{
     CLERK,
@@ -18,7 +19,7 @@ public abstract class Employee{
     private String id;
     private String name;
     protected int age;
-    protected Designation designation;
+    public Designation designation;
     private float salary;
     public static int employeeCount;
     static int minAge;
@@ -50,6 +51,7 @@ public abstract class Employee{
             return;
         }
         System.out.println("____________________________________________");
+        System.out.println("ID\t : "+emp.id);
         System.out.println("Name\t : "+emp.name);
         System.out.println("Age\t : "+emp.age);
         System.out.println("Salary\t : "+emp.salary);
@@ -85,6 +87,9 @@ public abstract class Employee{
         }
     }
 
+    public static String getDesignation(Employee emp){
+        return emp.designation.name();
+    }
     public abstract void setMinAge(int age);
     
     public abstract void setMaxAge(int age);
