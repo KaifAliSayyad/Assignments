@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.*;
@@ -10,10 +11,16 @@ import emp.exceptions.InvalidAgeException;
 import emp.exceptions.InvalidChoiceException;
 import emp.exceptions.InvalidIdException;
 import emp.utils.Menu;
+import emp.utils.EmployeeSearch;
+import emp.comparator.EmployeeIDSorter;
+import emp.comparator.EmployeeNameSorter;
+import emp.comparator.EmployeeAgeSorter;
+import emp.comparator.EmployeeSalarySorter;
+import emp.comparator.EmployeeDesignationSorter;
 
 
 public class EmployeeManagementApp {
-    static LinkedHashMap<String, Employee> employees = new LinkedHashMap<>();
+    static LinkedHashSet<Employee> employees = new LinkedHashSet<>();
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         while(true){
@@ -53,30 +60,89 @@ public class EmployeeManagementApp {
     }
 
     public static boolean search(){
-        Scanner sc = new Scanner(System.in);
+        LinkedHashSet<Employee> temp = new LinkedHashSet<>();
         while(true){
-            System.out.print("Enter the ID of the Employee you want details : ");
-            String id = sc.nextLine();
-            if(employees.containsKey(id)){
-                Employee.display(((Employee)employees.get(id)));
-                return false;
-            }else{
-                System.out.println("ID does not exists!!");
-                return true;
+            System.out.println("1. Search using ID");
+            System.out.println("2. Search using Designation");
+            System.out.println("3. Search using Name");
+            System.out.println("4. Exit");
+            int choice = Menu.readChoice(4);
+            switch (choice) {
+                case 1:
+                    Employee emp = EmployeeSearch.searchUsingID(employees);
+                    Employee.display(emp);
+                    break;
+                case 2:
+                    temp = EmployeeSearch.searchUsingDesignation(employees);
+                    if(temp.size() == 0){
+                        System.out.println("No employees present with selected Designation..");
+                        break;
+                    }else{
+                        Iterator i = temp.iterator();
+                        while(i.hasNext()){
+                            Employee.display((Employee)i.next());
+                        }
+                    }
+                    break;
+                case 3:
+                    temp = EmployeeSearch.searchUsingName(employees);
+                    if(temp.size() == 0){
+                        System.out.println("No employees present with selected Designation..");
+                        break;
+                    }else{
+                        Iterator i = temp.iterator();
+                        while(i.hasNext()){
+                            Employee.display((Employee)i.next());
+                        }
+                    }
+                    break;
+                case 4:
+                    return false;
             }
+            return true;
         }
     }
+
+    public static void display(){
+        System.out.println("1. Sort by ID");
+        System.out.println("2. Sort by Designation");
+        System.out.println("3. Sort by Name");
+        System.out.println("4. Sort by Age");
+        System.out.println("5. Sort by Salary");
+        System.out.println("6. Input Order");
+        int choice = new Scanner(System.in).nextInt();
+        ArrayList<Employee> array = new ArrayList<>(employees); 
+        switch(choice){
+            case 1 -> Collections.sort(array, new EmployeeIDSorter());
+            case 2 -> Collections.sort(array, new EmployeeDesignationSorter());
+            case 3 -> Collections.sort(array, new EmployeeNameSorter());
+            case 4 -> Collections.sort(array, new EmployeeAgeSorter());
+            case 5 -> Collections.sort(array, new EmployeeSalarySorter());
+            default -> {
+                displayAll();
+                
+            }
+        };
+
+        for(Employee emp : array){
+            Employee.display(emp);
+        }
+    }
+
     public static boolean delete(){
         Scanner sc = new Scanner(System.in);
         while(true){
             System.out.print("Enter the id of the employee you want to delete : ");
             String id = sc.nextLine();
-            if(employees.containsKey(id)){
-                if(Employee.getDesignation(((Employee)employees.get(id))).equals("CEO")){
+            Employee emp = EmployeeSearch.searchUsingID(employees, id);
+            if(emp != null){
+                if(emp.getDesignation().equals("CEO")){
                     System.out.println("Cannot delete CEO!!");
                     return true;
                 }
-                employees.remove(id);
+                
+                //Logic to delete this Employee
+                employees.remove(emp);
                 return false;
             }else{
                 System.out.println("No employee present with ID : "+id);
@@ -92,22 +158,23 @@ public class EmployeeManagementApp {
             return;
         }
 
-        Set<String> keys = employees.keySet();
-        for(String key : keys){
-            ((Employee)employees.get(key)).raiseSalary();
+        Iterator i = employees.iterator();
+        while(i.hasNext()){
+            ((Employee)i.next()).raiseSalary();
         }
+        System.out.println("Salary of all the Employees has been raised!!");
     }
 
 
-    public static void display(){
+    public static void displayAll(){
         if(employees.size() == 0){
             System.out.println("No employees present to display.");
             return;
         }
         
-        Set<String> keys = employees.keySet();
-        for(String key : keys){
-            Employee.display(((Employee)employees.get(key)));
+        Iterator i = employees.iterator();
+        while(i.hasNext()){
+            Employee.display((Employee)i.next());
         }
     }
 
@@ -133,7 +200,7 @@ public class EmployeeManagementApp {
                 }
                 System.out.print("Enter the id of the new Clerk : ");
                 newEmpId = Menu.readId(employees);
-                employees.put(newEmpId, Clerk.getObject(newEmpId));
+                employees.add(Clerk.getObject(newEmpId));
                 return true;
             }else if(type == 2){
                 if(!Employee.getBoolean()){
@@ -142,7 +209,7 @@ public class EmployeeManagementApp {
                 }
                 System.out.print("Enter the id of the new Programmer : ");
                 newEmpId = Menu.readId(employees);
-                employees.put(newEmpId, Programmer.getObject(newEmpId));
+                employees.add(Programmer.getObject(newEmpId));
                 return true;
             }else if(type == 3){
                 if(!Employee.getBoolean()){
@@ -151,12 +218,12 @@ public class EmployeeManagementApp {
                 }
                 System.out.print("Enter the id of the new Manager : ");
                 newEmpId = Menu.readId(employees);
-                employees.put(newEmpId, Manager.getObject(newEmpId));
+                employees.add(Manager.getObject(newEmpId));
                 return true;
             }else if(type == 4){
                 System.out.print("Enter the id of the new CEO : ");
                 newEmpId = Menu.readId(employees);
-                employees.put(newEmpId, Ceo.getObject(newEmpId));
+                employees.add(Ceo.getObject(newEmpId));
                 return true;
             }else if(type == 5){
                 return false;
