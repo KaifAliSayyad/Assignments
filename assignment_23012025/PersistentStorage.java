@@ -2,6 +2,8 @@ package emp.storage;
 import java.io.*;
 import java.util.LinkedHashSet;
 
+import javax.sound.sampled.Line;
+
 import emp.assignment.Employee;
 import emp.assignment.Designation;
 
@@ -58,33 +60,28 @@ public class PersistentStorage{
     public static LinkedHashSet<Employee> loadEmployees(){
         LinkedHashSet<Employee> employees = new LinkedHashSet<>();
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("employees.ser"));){
-            Employee emp = null;
-            while((emp = (Employee)ois.readObject()) != null){
-                employees.add(emp);
-            }
+            employees = (LinkedHashSet<Employee>)ois.readObject();
         }catch(Exception e){
-            System.out.println(e);
+            System.out.println("No employees present to load..");
         }
 
         // for(Employee e : employees) System.out.println(e.toString());
         return employees;
     }
 
-    // public static boolean saveEmployee(Employee emp){
-    //     try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("employees.ser", true));){
-    //         oos.writeObject(emp);
-    //     }catch(Exception e){
-    //         System.out.println("Error failed to save Employee : "+e);
-    //         return false;
-    //     }
-    //     return true;
-    // }
+    public static boolean saveEmployee(Employee emp){
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("employees.ser", true));){
+            oos.writeObject(emp);
+        }catch(Exception e){
+            System.out.println("Error failed to save Employee : "+e);
+            return false;
+        }
+        return true;
+    }
 
     public static boolean saveEmployees(LinkedHashSet<Employee> employees){
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("employees.ser", true));){
-            for(Employee emp : employees){
-                oos.writeObject(emp);
-            }
+                oos.writeObject(employees);
         }catch(Exception e){
             System.out.println("Error failed to Save Employees : "+e);
             return false;
