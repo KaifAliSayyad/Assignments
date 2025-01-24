@@ -1,4 +1,5 @@
 package emp.assignment;
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import emp.exceptions.InvalidAgeException;
@@ -13,13 +14,12 @@ import emp.assignment.Manager;
 import emp.assignment.Ceo;
 
 
-public abstract class Employee implements Comparable{
+public abstract class Employee implements Comparable, Serializable{
     private String id;
     private String name;
     protected int age;
     public Designation designation;
     private float salary;
-    public static int employeeCount;
     static int minAge;
     static int maxAge;
     private static boolean isCeoPresent = false;
@@ -29,7 +29,6 @@ public abstract class Employee implements Comparable{
         this.minAge = minAge;
         this.maxAge = maxAge;
        while(getDetails());
-       employeeCount++;
     }
 
     //super(id, 21, 60, name, age, salary);
@@ -40,7 +39,6 @@ public abstract class Employee implements Comparable{
         this.name = name;
         this.age = age;
         this.salary = salary;
-        employeeCount++;
     }
 
     public boolean getDetails(){
@@ -54,10 +52,6 @@ public abstract class Employee implements Comparable{
 
 
     public static final void display(Employee emp){
-        if(employeeCount == 0){
-            System.out.println("No employee present to display");
-            return;
-        }
         System.out.println("____________________________________________");
         System.out.println("ID\t : "+emp.id);
         System.out.println("Name\t : "+emp.name);

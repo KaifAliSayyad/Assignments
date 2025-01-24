@@ -27,6 +27,7 @@ public class EmployeeManagementApp {
     static LinkedHashSet<Employee> employees = new LinkedHashSet<>();
     public static void main(String[] args) {
         employees = loadEmployees();
+        // for(Employee e : employees) System.out.println(e.toString());
         boolean isExitted = false;
         try(Scanner sc = new Scanner(System.in);){
             while(!isExitted){

@@ -87,7 +87,7 @@ public class Menu{
 		Designation[] designations = Designation.values();
 		while(true){
 			try{
-				System.out.println("Enter the id of the new "+designations[desgn-1]);
+				System.out.print("Enter the id of the new "+designations[desgn-1]+" : ");
 				String newId = sc.nextLine();
 				// sc.nextLine();
 				if(newId.length() == 0){
