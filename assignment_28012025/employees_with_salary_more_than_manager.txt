@@ -1,0 +1,34 @@
+
+C:\Users\Wissen\Desktop\Training>set path=C:\Program Files\PostgreSQL\17\bin;.;C:\Python313\Scripts\;C:\Python313\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-17\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Users\Wissen\AppData\Local\Microsoft\WindowsApps;C:\Users\Wissen\AppData\Local\Programs\Git\cmd;C:\Users\Wissen\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Wissen\AppData\Roaming\npm
+
+C:\Users\Wissen\Desktop\Training>psql -U postgres
+Password for user postgres:
+
+psql (17.2)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \c empdb
+You are now connected to database "empdb" as user "postgres".
+empdb=# select e1.name from employees e1 inner join employees e2 e1.mgr_id = e2.eid and e1.salary >e2.salary;
+ERROR:  syntax error at or near "e1"
+LINE 1: ...e1.name from employees e1 inner join employees e2 e1.mgr_id ...
+                                                             ^
+empdb=# select e1.name from employees e1 inner join employees e2 on e1.mgr_id = e2.eid and e1.salary > e2.salary;
+     name
+--------------
+ employee_6
+ employee_7
+ employee_8
+ employee_9
+ Jane Smith
+ Emily Clark
+ Sophia Davis
+ employee_3
+ employee_4
+(9 rows)
+
+
+empdb=#
