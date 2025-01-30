@@ -5,9 +5,18 @@ import java.sql.*;
 import java.text.DecimalFormat;
 
 import emp.utils.Menu;
+import emp.storage.DBConnection;
 
 public class DatabaseOperations {
-    private static final String url = "jdbc:postgresql://localhost:5432/empdb";
+
+    private static final Connection con;
+    private static final Statement stmt;
+
+    static{
+        con = DBConnection.con;
+        stmt = DBConnection.stmt;
+    }
+
     public static boolean add(int desig_id, int department_id){
         String name = Menu.readName();
         int age = Menu.readAge(21, 65);
@@ -16,7 +25,7 @@ public class DatabaseOperations {
         df.setMaximumFractionDigits(2);
         salary = Float.parseFloat(df.format(salary));
 
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); PreparedStatement pstmt = con.prepareStatement("insert into employee(name, age, salary, designation, department) values(?, ?, ?, ?, ?)");){
+        try(PreparedStatement pstmt = con.prepareStatement("insert into employee(name, age, salary, designation, department) values(?, ?, ?, ?, ?)");){
             pstmt.setString(1, name);
             pstmt.setInt(2, age);
             pstmt.setFloat(3, (salary));
@@ -33,7 +42,7 @@ public class DatabaseOperations {
     }
 
     public static Map<Integer, String> loadDesignations(){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             ResultSet rs = stmt.executeQuery("select * from designation_table");
             Map<Integer, String> desing = new HashMap<>();
             while(rs.next()){
@@ -48,7 +57,7 @@ public class DatabaseOperations {
     }
 
     public static Map<Integer, String> loadDepartments(){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             ResultSet rs = stmt.executeQuery("select * from department_table");
             Map<Integer, String> department = new HashMap<>();
             while(rs.next()){
@@ -64,10 +73,10 @@ public class DatabaseOperations {
 
     public static int addDesignation(){
         int new_id = -1;
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in)) ;
-            System.out.print("Enter the name of new designation : ");
-            String design = br.readLine();
+            System.out.print("Enter the name of new designation ");
+            String design = Menu.readDesignation();
             int affected = stmt.executeUpdate("insert into designation_table(designation_name) values ('"+design+"')");
 
             System.out.println(affected+ " designation added successfully!!");
@@ -84,12 +93,10 @@ public class DatabaseOperations {
     }
 
     public static List<List<String>> getRecords(String order_by){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             String query = "select e.eid, e.name, e.age, e.salary, ds.designation_name, dp.department_name from employee e join designation_table as ds on e.designation = ds.designation_id join department_table as dp on e.department = dp.department_id order by "+order_by;
-            String query1 = "select e.eid, e.name, e.age, e.salary, ds.designation_name, dp.department_name from employee e join designation_table as ds on e.designation = ds.designation_id join department_table as dp on e.department = dp.department_id order by "+ds.designation_name;
-            String query2 = "select e.eid, e.name, e.age, e.salary, ds.designation_name, dp.department_name from employee e join designation_table as ds on e.designation = ds.designation_id join department_table as dp on e.department = dp.department_id order by "+dp.department_name;
+            String query1 = "select e.eid, e.name, e.age, e.salary, ds.designation_name, dp.department_name from employee e join designation_table as ds on e.designation = ds.designation_id join department_table as dp on e.department = dp.department_id order by ds.designation";
             if(order_by.equals("designation")) query = query1;
-            if(order_by.equals("department")) query = query2;
             ResultSet rs = stmt.executeQuery(query);
             List<List<String>> employees = new ArrayList<>();
             while(rs.next()){
@@ -102,6 +109,8 @@ public class DatabaseOperations {
                 temp.add(rs.getString(6));
                 employees.add(temp);
             }
+
+
             return employees;
         }catch(Exception e){
             System.out.println("Cannot fetch records from database. ERROR :"+e);
@@ -110,16 +119,19 @@ public class DatabaseOperations {
     }
 
     public static void updateSalary(){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in)) ;
-            System.out.print("Enter the ID of the employee you want to increment salary of : ");
-            int id = Integer.parseInt(br.readLine());
+            System.out.print("Enter the ID of the employee you want to increment salary of ");
+            int id = Menu.readId();
             ResultSet rs = stmt.executeQuery("select salary from employee where eid = "+id);
             float salary = (float)0.00;
-            while(rs.next()) salary = rs.getFloat(1);
 
-            System.out.print("Enter the increment amount : ");
-            float inc = Float.parseFloat(br.readLine());
+            while(rs.next()) salary = rs.getFloat(1);
+            if(salary == 0.00f){
+                throw new Exception("Employee not present");
+            }
+            System.out.print("Enter the increment amount ");
+            float inc = Menu.readSalary();
             salary += Math.max(0, inc);
 
             DecimalFormat df = new DecimalFormat("0.00");
@@ -131,15 +143,20 @@ public class DatabaseOperations {
             System.out.println("Salary of "+affected+" employee updated.");
 
         }catch(Exception e){
-            System.out.println("No employee present with given ID.");
+            e.printStackTrace();
         }
     }
 
     public static void deleteEmployee(){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
+        try{
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in)) ;
-            System.out.print("Enter the id of the employee you want to remove : ");
-            int id = Integer.parseInt(br.readLine());
+            System.out.print("Enter the id of the employee you want to remove ");
+            int id = Menu.readId();
+            
+            ResultSet rs = stmt.executeQuery("select eid from employee where eid ="+id);
+            int eid = -1;
+            while(rs.next()) eid = rs.getInt(1);
+            if(eid == -1) throw new Exception("No employee present..");
 
             System.out.println("Do you really want to delete this employee? (1. Yes/ 2. No)");
             int confirm = Menu.readChoice(2);
@@ -150,15 +167,14 @@ public class DatabaseOperations {
                 System.out.println("Employee deletetion cancelled!!");
             }
         }catch(Exception e){
-            System.out.println("No employee present with given ID.");
+            e.printStackTrace();
         }
     }
 
     public static List<String> searchEmployee(){
-        try(Connection con = DriverManager.getConnection(url, "postgres", "tiger"); Statement stmt = con.createStatement();){
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in)) ;
-            System.out.print("Enter the id of the employee you want to search : ");
-            int id = Integer.parseInt(br.readLine());
+        try{
+            System.out.print("Enter the id of the employee you want to search ");
+            int id = Menu.readId();
             String query = "select e.eid, e.name, e.age, e.salary, ds.designation_name, dp.department_name from employee e join designation_table as ds on e.designation = ds.designation_id join department_table as dp on e.department = dp.department_id where eid = "+id;
             ResultSet rs = stmt.executeQuery(query);
 
@@ -172,11 +188,16 @@ public class DatabaseOperations {
                 temp.add(rs.getString(6));
             }
 
+            if(temp.size() == 0) throw new Exception("No employees present..");
             return temp;
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
+    }
+
+    public static boolean closeConnection(){
+        return DBConnection.closeConnection() && Menu.closeReader();
     }
 
 }

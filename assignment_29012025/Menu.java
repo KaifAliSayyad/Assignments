@@ -13,13 +13,22 @@ import emp.utils.Patterns;
 
 public class Menu{
 	private static int maxChoice;
+	private static BufferedReader br = null;
+
+	static{
+		try{
+			br = new BufferedReader(new InputStreamReader(System.in));
+		}catch(Exception e){
+			System.out.println(e);
+		}
+	}
 
 	public static int readChoice(int max){
 		maxChoice = max;
 		while(true){
 			try{
 				System.out.print("Enter choice : ");
-				int choice = new Scanner(System.in).nextInt();
+				int choice = Integer.parseInt(br.readLine());
 				if(choice < 1 || choice > maxChoice){
 					throw new InvalidChoiceException();
 				}
@@ -30,6 +39,8 @@ public class Menu{
 			}
 			catch(InvalidChoiceException e){
 				e.displayMessage(maxChoice);
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 	}
@@ -37,7 +48,6 @@ public class Menu{
 	public static String readName(){
 		while(true){
 			try{
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				System.out.print("Enter name : ");
 				String name = br.readLine();
 				if(Patterns.validateName(name)) return name;
@@ -54,11 +64,11 @@ public class Menu{
 		}
 	}
 
-	public static int readAge(int minAge, int maxAge){
+	public static int readAge( int minAge, int maxAge){
 		while (true) {
 			try{
 				System.out.print("Enter age : ");
-				int age = new Scanner(System.in).nextInt();
+				int age = Integer.parseInt(br.readLine());
 				if(age < minAge || age > maxAge) throw new InvalidAgeException(minAge, maxAge);
 				else return age;
 			}catch(InvalidAgeException e){
@@ -66,6 +76,8 @@ public class Menu{
 
 			}catch(InputMismatchException e){
 				System.out.println("Only numbers are allowed in input field...");
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 	}
@@ -74,7 +86,7 @@ public class Menu{
 		while(true){
 			try{
 				System.out.print("Enter salary : ");
-				float salary = new Scanner(System.in).nextFloat();
+				float salary = Float.parseFloat(br.readLine());
 				if(salary <= 0) throw new InvalidSalaryException();
 				else return salary;
 			}catch(InvalidSalaryException e){
@@ -82,7 +94,47 @@ public class Menu{
 			}catch(InputMismatchException e){
 				System.out.println("Only numbers are allowed in input field...");
 
+			}catch(Exception e){
+				e.printStackTrace();
 			}
+		}
+	}
+
+	public static int readId(){
+		while(true){
+			try{
+				System.out.print("-> ");
+				int id = Integer.parseInt(br.readLine());
+				return id;
+			}catch(InputMismatchException e){
+				System.out.println("Only numbers are allowed in input field...");
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static String readDesignation(){
+		while(true){
+			try{
+				System.out.print(" -> ");
+				String name = br.readLine();
+				return name.toUpperCase();
+			}catch(InputMismatchException e){
+				System.out.println("Name should be a valid string....");
+			}catch(Exception e){
+				System.out.println(e);
+			}
+		}
+	}
+
+	public static boolean closeReader(){
+		try{
+			br.close();
+			return true;
+		}catch(Exception e){
+			System.out.println(e);
+			return false;
 		}
 	}
 }
