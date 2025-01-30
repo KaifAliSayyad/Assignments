@@ -4,10 +4,17 @@ import java.util.*;
 
 
 import emp.storage.DatabaseOperations;
+import emp.utils.EmployeeDAO;
 
-public class EmployeeUtils {
+public class EmployeeUtils implements EmployeeDAO{
+
+    private static EmployeeUtils emp = null;
+
+    private EmployeeUtils(){
+
+    }
     
-    public static boolean create(Map<Integer, String> designations, Map<Integer, String> departments){
+    public boolean create(Map<Integer, String> designations, Map<Integer, String> departments){
         Set<Integer> keySet1 = designations.keySet();
         Object[] designation_ids = keySet1.toArray();
         int n = designation_ids.length;
@@ -50,7 +57,7 @@ public class EmployeeUtils {
         }
     }
 
-    public static boolean display(){
+    public boolean display(){
         System.out.println("1. By ID");
         System.out.println("2. Name");
         System.out.println("3. Designation");
@@ -78,7 +85,7 @@ public class EmployeeUtils {
         }
     }
 
-    private static void printEmployees(List<List<String>> rs){
+    public void printEmployees(List<List<String>> rs){
         try{
             if(rs.size() == 0){
                 return;
@@ -92,7 +99,7 @@ public class EmployeeUtils {
         }
     }
 
-    private static void printEmployee(List<String> emp){
+    private void printEmployee(List<String> emp){
         System.out.println("-----------------------------------------------------------");
         System.out.println("ID\t\t: "+emp.get(0));
         System.out.println("Name\t\t: "+emp.get(1));
@@ -103,15 +110,25 @@ public class EmployeeUtils {
         System.out.println("-----------------------------------------------------------");
     }
 
-    public static void appraisal(){
+    public void appraisal(){
         DatabaseOperations.updateSalary();
     }
 
-    public static void search(){
+    public void search(){
         List<String> employee = DatabaseOperations.searchEmployee();
         printEmployee(employee);
     }
-    public static void remove(){
+    
+    public void remove(){
         DatabaseOperations.deleteEmployee();
+    }
+
+    public void closeConnection(){
+        DatabaseOperations.closeConnection();
+    }
+
+    public static EmployeeUtils getObject(){
+        if(emp == null) emp = new EmployeeUtils();
+        return emp;
     }
 }

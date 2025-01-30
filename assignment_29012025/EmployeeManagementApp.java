@@ -1,5 +1,7 @@
 import java.util.*;
 
+import emp.utils.EmployeeUtils;
+
 import emp.storage.DatabaseOperations;
 import java.io.*;
 import java.sql.*;
@@ -15,6 +17,7 @@ public class EmployeeManagementApp {
     public static void main(String[] args){
         designations = DatabaseOperations.loadDesignations();
         departments = DatabaseOperations.loadDepartments();
+        EmployeeUtils emp = EmployeeUtils.getObject();
 
         if(designations.size() > 0 && departments.size() > 0){
             while(true){
@@ -29,22 +32,22 @@ public class EmployeeManagementApp {
                 
                 switch (choice) {
                     case 1:
-                        while(EmployeeUtils.create(designations, departments));
+                        while(emp.create(designations, departments));
                         break;
                     case 2:
-                        while(EmployeeUtils.display());
+                        while(emp.display());
                         break;
                     case 3:
-                    EmployeeUtils.appraisal();
+                        emp.appraisal();
                         break;
                     case 4:
-                    EmployeeUtils.search();
+                        emp.search();
                         break;
                     case 5:
-                    EmployeeUtils.remove();
+                        emp.remove();
                         break;
                     case 6:
-                        DatabaseOperations.closeConnection();
+                        emp.closeConnection();
                         System.out.println("Exitting...");
                         System.exit(0);
                     break;
