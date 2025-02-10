@@ -70,7 +70,7 @@ public abstract class Race {
             }
         }
 
-        System.out.println("Biker Name\t| Start Time\t| End Time\t| Time Taken\t| Rank");
+        System.out.println("Biker Name\t| Start Time\t| End Time\t| Time Taken (ms)\t| Rank");
         System.out.println("____________________________________________________________________________");
         for(int i = 0 ; i < bikers.length ; i++){
             System.out.println(bikers[i].getName() + "\t| " + bikers[i].getStartTime() + "\t| " + bikers[i].getEndTime() + "\t| " + bikers[i].getTimeTaken() + "\t| " + (i + 1));

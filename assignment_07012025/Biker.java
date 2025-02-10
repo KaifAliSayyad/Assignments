@@ -1,6 +1,10 @@
 import java.time.*;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalUnit;
+import java.util.concurrent.CountDownLatch;
+
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 import static java.time.temporal.ChronoUnit.SECONDS;
 public class Biker extends Race implements Runnable{
     private LocalTime startTime;
@@ -10,23 +14,23 @@ public class Biker extends Race implements Runnable{
     private int distRemaining;
     private String name;
     private static int index = 0;
+    private CountDownLatch latch;
+    private CountDownLatch waitLatch;
 
-    private Biker(String name){
+    private Biker(String name, CountDownLatch latch, CountDownLatch waitLatch){
         this.name = name;
         this.speed = (int)(Math.random() * totalDistance/4) + (totalDistance / 10);
         distRemaining = totalDistance;
+        this.latch = latch;
+        this.waitLatch = waitLatch;
         setBiker(index++, this);
     }
 
     public void run(){
         try{
-
-            synchronized(Race.getLock()){
-                if(!Race.getIsStarted()){
-                    System.out.println("Waiting for eveyone to start...");
-                    Race.getLock().wait();
-                }
-            }
+            waitLatch.countDown();
+            if(waitLatch.getCount() > 0) System.out.println("Biker "+name+" is waiting for all the bikers to get ready!!");
+            waitLatch.await();
         }catch(InterruptedException e){
             System.out.println("Error..");
         }
@@ -43,17 +47,18 @@ public class Biker extends Race implements Runnable{
         }
 
         endTime = LocalTime.now();
-        timeTaken = SECONDS.between(startTime, endTime);
+        timeTaken = startTime.until(endTime, MILLIS);
         distRemaining = 0;
+        latch.countDown();
     }
 
     public int getRemainingDistance(){
         return distRemaining;
     }
 
-    public static Biker getObject(){
+    public static Biker getObject(CountDownLatch latch, CountDownLatch waitLatch){
         String name = Inputs.getBikerName(index);
-        return new Biker(name);
+        return new Biker(name, latch, waitLatch);
     }
 
     public String getName(){
