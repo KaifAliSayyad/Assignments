@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 23
+Class-Path: lib/postgresql-42.7.3.jar lib/checker-qual-3.42.0.jar
+Main-Class: EmployeeManagementApp
+Created-By: Maven Integration for Eclipse
+

@@ -1,0 +1,34 @@
+# version: '3.9'
+
+services:
+  postgres:
+    image: empdb
+    build: ./Postgres
+    container_name: empdb
+    environment:
+      - POSTGRES_PASSWORD=tiger
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=empdb
+    networks:
+      - code-db
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d empdb'"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  
+  java:
+    image: empcode
+    build: ./Code
+    container_name: java_container
+    depends_on:
+      - postgres
+    restart: no
+    networks:
+      - code-db
+  
+networks:
+  code-db:
+    driver: bridge
+    
