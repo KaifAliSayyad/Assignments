@@ -1,6 +1,10 @@
 package com.main;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.rowset.JdbcRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -61,25 +65,37 @@ public class DatabaseOperations {
 		}
 	}
 	
-	public static User register(String id, String name, String pass) throws Exception{
-		User obj = new User();
-		rs.setCommand("select * from customer where id = '"+id+"'");
+	public static void register(User u) throws Exception{
+		rs.setCommand("select * from customer where id = '"+u.getId()+"'");
 		rs.execute();
 		String check = "";
 		while(rs.next()) check = rs.getString(1);
 		if(check.length() == 0) {
 			rs.moveToInsertRow();
-			rs.updateString("id", id);
-			rs.updateString("name", name);
-			rs.updateString("password", pass);
+			rs.updateString("id", u.getId());
+			rs.updateString("name", u.getName());
+			rs.updateString("password", u.getPassword());
 			rs.insertRow();
-			obj.setId(String.valueOf(id));
-			obj.setName(name);
-			obj.setPassword(pass);
-			return obj;
 		}else {
 			throw new NullPointerException();		//user already present
 		}
+	}
+	
+	public static Map<String, User> getUsersMap() {
+		Map<String, User> users = new HashMap<>();
+		try {
+			rs.setCommand("select * from customer");
+			rs.execute();
+			int index = 0;
+			while(rs.next()) {
+				users.put(String.valueOf(index), User.getObject(rs.getString(1), rs.getString(2), rs.getString(3)));
+				index++;
+			}
+			return users;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return users;
 	}
 	
 	

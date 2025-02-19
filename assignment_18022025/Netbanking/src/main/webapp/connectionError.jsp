@@ -5,18 +5,19 @@
 	</head>
 	<body>
 		<h2>${msg}</h2>
-
+		<hr>
 		<% 
 			String errCodeStr = (String) request.getAttribute("errCode");
 			int errCode = (errCodeStr != null) ? Integer.parseInt(errCodeStr) : -1;
 			
-			if (errCode == 2) { 
+			if (errCode == 1) { 
 		%>
          	<%@ include file="login.html" %>
-	    <% } else if (errCode == 2 || errCode == 3) { %> 
+	    <% } else if (errCode == 2) { %> 
          	<%@ include file="register.html" %>	      		
 	    <% } else { %>
 	         <h3>Try Again Later..</h3>
+	         <a href="/">Home</a>
 	    <% } %>
 
 	</body>
