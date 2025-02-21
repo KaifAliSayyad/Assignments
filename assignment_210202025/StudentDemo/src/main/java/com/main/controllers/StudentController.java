@@ -1,7 +1,6 @@
 package com.main.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.main.entities.Student;
-import com.main.entities.Teacher;
+import com.main.models.Student;
 import com.main.services.StudentService;
 
 @RestController
@@ -65,10 +63,5 @@ public class StudentController {
 	public String saveStudent(@RequestBody Student s) {
 		studentService.addStudent(s);
 		return "Student Added Successfully";
-	}
-	
-	@GetMapping("/students/class_teacher")
-	public Optional<Teacher> getTeacherByRegNo(@RequestParam int uniRegNo) {
-		return studentService.getByRegNo(uniRegNo);
 	}
 }

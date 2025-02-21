@@ -1,8 +1,7 @@
 package com.main.utils;
 
 import java.util.Comparator;
-
-import com.main.entities.Student;
+import com.main.models.Student;
 
 public class StudentPercentageComparator implements Comparator<Student>{
 	public int compare(Student e1, Student e2){

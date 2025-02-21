@@ -238,4 +238,14 @@ public class EmployeeManagementApp {
             return true;
         }
     }
+
+    //Write to String method
+    public static String toString(LinkedHashSet<Employee> employees){
+        StringBuilder sb = new StringBuilder();
+        Iterator i = employees.iterator();
+        while(i.hasNext()){
+            sb.append(i.next().toString());
+        }
+        return sb.toString();
+    }
 }
