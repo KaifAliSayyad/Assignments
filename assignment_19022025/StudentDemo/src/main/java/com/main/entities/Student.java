@@ -3,6 +3,8 @@ package com.main.entities;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +20,11 @@ public class Student{
 	private String school;
 	private double percentage;
 	
+//	@ManyToOne
+//    @JoinColumn(name = "standard")
+//    private Teacher teacher;
+	
+
 	public Student() {
 		
 	}
@@ -33,6 +40,13 @@ public class Student{
 	}
 	
 	
+	public int getUniRegNo() {
+		return uniRegNo;
+	}
+	
+	public void setUniRegNo(int uniRegNo) {
+		this.uniRegNo = uniRegNo;
+	}
 	
 	public int getRollNo() {
 		return rollNo;
@@ -84,14 +98,16 @@ public class Student{
 	}
 
 
-	public int getUniRegNo() {
-		return uniRegNo;
-	}
-	
-	public void setUniRegNo(int uniRegNo) {
-		this.uniRegNo = uniRegNo;
-	}
 
+	
+//	public Teacher getTeacher() {
+//		return teacher;
+//	}
+//	
+//	public void setTeacher(Teacher teacher) {
+//		this.teacher = teacher;
+//	}
+	
 	@Override
 	public String toString() {
 		return "Student [name=" + name + ", rollNo=" + rollNo + ", standard=" + standard + ", school=" + school
