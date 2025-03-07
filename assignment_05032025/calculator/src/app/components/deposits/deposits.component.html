@@ -1,0 +1,26 @@
+<div class="content">
+    <div class="hedaing">
+        <h2>Deposits Calculator</h2>
+    </div>
+    <div class="form-container">
+        <hr>
+        <div class="exact-input">
+            <div class="exact-amount">
+                <label>Enter the exact amount : </label>
+                <input type="number" [(ngModel)]="principalAmount">
+            </div>
+            <div class="exact-tenure">
+                <label>Enter the exact Maturity Period (<10 years) : </label>
+                        <input type="number" [(ngModel)]="maturityPeriod">
+            </div>
+            <div class="interest-rate">
+                Fixed Interest Rate is <label>{{interestRate}}%</label>
+            </div>
+        </div>
+        <button (click)="calculate()">Calculate</button>
+        <div class="output" [style]="display">
+            <p>Maturity Amount : {{maturityAmount}}</p>
+            <p>Interest Earned : {{interestEarned}}</p>
+        </div>
+    </div>
+</div>

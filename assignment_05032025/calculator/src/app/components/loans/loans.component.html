@@ -1,0 +1,43 @@
+<div class="content">
+    <div class="heading">
+        <h2>Loan Calculator</h2>
+    </div>
+    <div  class="form-container">
+        <div class="name">
+            <label>Name : </label>
+            <input type="text" class="form-control" placeholder="Enter your name.." [(ngModel)]="name"  >
+            <hr>
+            <div class="loan-type">
+                @for (loan of loans; track loan) {
+                    <div class="radio-option">
+                        <div class="loan">    
+                            <input type="radio" id="loan.type" name="loan-type" [value]="loan" [checked]="selectedLoanType === loan">
+                            <label for="loan.type" (click)="selectLoan(loan)">
+                                {{loan.type}} | 
+                                <span>Interest Rate : {{loans[loans.indexOf(loan)].interestRate}}, Amount : [{{loans[loans.indexOf(loan)].minAmount}} - {{loans[loans.indexOf(loan)].maxAmount}}], Tenure : {{loans[loans.indexOf(loan)].tenure}}</span>
+                            </label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr>
+            <div class="exact-input">
+                <div class="exact-amount">
+                    <label>Enter the exact amount ({{selectedLoanType.minAmount}}-{{selectedLoanType.maxAmount}}) : </label>
+                    <input type="number" [(ngModel)]="exactAmount">
+                </div>
+                <div class="exact-tenure">
+                    <label>Enter the exact tenure (<{{selectedLoanType.tenure}} years) : </label>
+                    <input type="number" [(ngModel)]="exactTenure">
+                </div>
+            </div>
+            <button (click)="calculate()">Calculate</button>
+            <div class="output" [style]="display">
+                <p>Calculated EMI</p>
+                <p>Monthly EMI    : {{monthlyEmi}}</p>
+                <p>Total Interest : {{totalInterest}}</p>
+                <p>Total Amount   : {{totalAmount}}</p>
+            </div>
+        </div>
+    </div>
+</div>

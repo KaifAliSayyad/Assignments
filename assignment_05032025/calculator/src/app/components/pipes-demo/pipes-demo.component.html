@@ -1,0 +1,24 @@
+<div class="content">
+    <div class="heading">
+        <h3>Pipes Demo</h3>
+    </div>
+    <div class="body">
+        <div class="circle">
+            <label>Enter Radius</label>
+            <input type="number" [(ngModel)]="radius" />
+            <p>Diameter : {{ radius| diameter }}</p>
+            <p>Perimeter: {{ radius| perimeter }}</p>
+            <p>Area     : {{ radius| area }}</p>
+        </div>
+        <hr>
+        <div class="currency">
+            <label>Enter Amount in INR</label>
+            <input type="number" [(ngModel)]="amountInINR" />
+            <p>Amount in USD : {{amountInINR | currencypipe}}</p>
+            <p>Amount in JPY : {{amountInINR | currencypipe : 'JPY'}}</p>
+            <p>Amount in EUR : {{amountInINR | currencypipe : 'EUR'}}</p>
+            <p>Amount in AUD : {{amountInINR | currencypipe : 'AUD'}}</p>
+            <p>Amount in SAR : {{amountInINR | currencypipe : 'SAR'}}</p>
+        </div>
+    </div>
+</div>

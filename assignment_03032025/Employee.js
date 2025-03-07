@@ -1,37 +1,35 @@
 // Employee manager class
 class EmployeeManager {
     constructor() {
-        this.consoleLog = document.getElementById('consoleOutput');
-        this.apiBaseUrl = 'http://localhost:8080'; // Base URL of your REST API
+        this.apiBaseUrl = 'http://localhost:8080/employees'; // Base URL of your REST API
+        this.employees = []; 
+
     }
 
-    // Custom console.log replacement
-    log(message) {
-        const logEntry = document.createElement('p');
-        logEntry.textContent = message;
-        this.consoleLog.appendChild(logEntry);
-        this.consoleLog.scrollTop = this.consoleLog.scrollHeight;
-        console.log(message); // Also log to actual console
+    async getMaxIdCount(){
+        const id = await fetch(`${this.apiBaseUrl}/getMaxId`);
+        return id;
     }
+
 
     // Fetch all employees from the REST API
     async fetchEmployees() {
         try {
-            const response = await fetch(this.apiBaseUrl+"/employees", );
+            const response = await fetch(this.apiBaseUrl);
             if (!response.ok) {
                 throw new Error(`Error fetching employees: ${response.statusText}`);
             }
             const employees = await response.json();
-            this.log('Fetched employees successfully.');
             return employees;
         } catch (error) {
-            this.log(error.message);
+            console.log(error.message);
             return [];
         }
     }
 
     // Add a new employee via the REST API
     async addEmployee(employee) {
+        console.log("adding employee -"+JSON.stringify(employee));
         try {
             const response = await fetch(this.apiBaseUrl, {
                 method: 'POST',
@@ -41,10 +39,9 @@ class EmployeeManager {
             if (!response.ok) {
                 throw new Error(`Error adding employee: ${response.statusText}`);
             }
-            this.log(`Added employee: ${employee.name}`);
             return true;
         } catch (error) {
-            this.log(error.message);
+            console.log(error.message);
             return false;
         }
     }
@@ -57,10 +54,9 @@ class EmployeeManager {
                 throw new Error(`Employee with name "${name}" not found.`);
             }
             const employee = await response.json();
-            this.log(`Employee found: ${employee.name}`);
             return employee;
         } catch (error) {
-            this.log(error.message);
+            console.log(error.message);
             return null;
         }
     }
@@ -73,6 +69,7 @@ class EmployeeManager {
                 throw new Error(`Employee with name "${name}" not found.`);
             }
             const updatedEmployee = { ...employee, ...updatedData };
+            console.log("updating employee -"+JSON.stringify(updatedEmployee));
             const response = await fetch(this.apiBaseUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -81,10 +78,9 @@ class EmployeeManager {
             if (!response.ok) {
                 throw new Error(`Error updating employee: ${response.statusText}`);
             }
-            this.log(`Employee "${name}" updated successfully.`);
             return true;
         } catch (error) {
-            this.log(error.message);
+            console.log(error.message);
             return false;
         }
     }
@@ -102,20 +98,16 @@ class EmployeeManager {
             if (!response.ok) {
                 throw new Error(`Error removing employee: ${response.statusText}`);
             }
-            this.log(`Removed employee: ${employee.name}`);
             return true;
         } catch (error) {
-            this.log(error.message);
+            console.log(error.message);
             return false;
         }
     }
 
     // Display all employees
-    displayEmployees() {
-        this.log("Employee List:");
-        this.employees.forEach((emp, index) => {
-            this.log(`${index + 1}. ID: ${emp.id}, Name: ${emp.name}, Age: ${emp.age}, Salary: ${emp.salary}, Designation: ${emp.designation}`);
-        });
+    async displayEmployees() {
+        this.employees = await this.fetchEmployees();
         return this.employees;
     }
 }
@@ -153,13 +145,13 @@ function showStatus(message, isSuccess = true) {
 }
 
 // Populate employee table
-function refreshEmployeeTable() {
+async function refreshEmployeeTable() {
     const tableBody = document.getElementById('employeeTableBody');
     tableBody.innerHTML = '';
     
-    const employees = manager.displayEmployees();
+    const employees = await manager.displayEmployees();
     
-    if (employees.length === 0) {
+    if (employees?.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = '<td colspan="7">No employees found</td>';
         tableBody.appendChild(row);
@@ -169,7 +161,6 @@ function refreshEmployeeTable() {
     employees.forEach((emp, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index + 1}</td>
             <td>${emp.id}</td>
             <td>${emp.name}</td>
             <td>${emp.age}</td>
@@ -182,6 +173,7 @@ function refreshEmployeeTable() {
         `;
         tableBody.appendChild(row);
     });
+
 }
 
 // Add Event Listeners
@@ -189,13 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add Employee Form
     document.getElementById('addEmployeeForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const IDCount = 4;
         const name = document.getElementById('name').value;
         const age = parseInt(document.getElementById('age').value);
         const salary = parseInt(document.getElementById('salary').value);
         const designation = document.getElementById('designation').value;
         
-        manager.addEmployee({ IDCount, name, age, salary, designation });
+        manager.addEmployee({name, age, salary, designation });
         IDCount++;
         showStatus(`Employee ${name} added successfully!`);
         document.getElementById('addEmployeeForm').reset();
@@ -207,8 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Search Button
     document.getElementById('searchButton').addEventListener('click', () => {
         const name = document.getElementById('searchName').value;
-        const result = manager.searchEmployee(name);
-        
+        const result = async () => await manager.searchEmployee(name);
         const searchResult = document.getElementById('searchResult');
         const searchResultBody = document.getElementById('searchResultBody');
         
@@ -347,7 +337,7 @@ function prepareRemove(name) {
 // Add sample employees
 window.addEventListener('load', () => {
     // Add sample employees
-    manager.addEmployee({ id: 2, name: "Shoyab", age: 22, salary: 50000, designation: "Developer" });
-    manager.addEmployee({ id: 3, name: "Omkar", age: 25, salary: 60000, designation: "Tester" });
+    manager.addEmployee({name: "Shoyab", age: 22, salary: 50000, designation: "Developer" });
+    manager.addEmployee({name: "Omkar", age: 25, salary: 60000, designation: "Tester" });
     refreshEmployeeTable();
 });

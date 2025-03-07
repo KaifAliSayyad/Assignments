@@ -19,12 +19,14 @@ public class EmployeeService {
 		dao.save(emp);
 	}
 	
-	public void removeEmployee(Employee emp) {
+	public void removeEmployee(String name) {
+		Employee emp = getEmployeeByName(name);
 		dao.delete(emp);
 	}
 	
 	public Employee getEmployeeByName(String name) {
-		return dao.getByName(name);
+		Employee emp = dao.getByName(name);
+		return emp;
 	}
 	
 	public boolean updateEmployee(Employee emp) {
@@ -43,5 +45,14 @@ public class EmployeeService {
 	
 	public Optional<Employee> getEmployeeByID(int id) {
 		return dao.findById(id);
+	}
+	
+	public Integer getMaxID() {
+		List<Employee> employees = getEmployees();
+		int maxID = 0;
+		for(Employee emp : employees) {
+			maxID = Math.max(maxID, emp.getId());
+		}
+		return maxID;
 	}
 }

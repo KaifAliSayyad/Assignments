@@ -1,5 +1,7 @@
 package com.main.entities;
 
+import org.hibernate.annotations.Generated;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -9,6 +11,7 @@ import jakarta.persistence.Table;
 public class Employee {
 	
 	@Id
+	@Generated
 	private int id;
 	
 	private String name;
@@ -21,9 +24,8 @@ public class Employee {
 
 	public Employee() {}
 	
-	public Employee(int id, String name, int age, float salary, String designation) {
+	public Employee(String name, int age, float salary, String designation) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.age = age;
 		this.salary = salary;
@@ -34,9 +36,6 @@ public class Employee {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

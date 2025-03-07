@@ -1,0 +1,26 @@
+<div class="content">
+    <div class="calculator">
+        <div class="toggle">
+            <div (click)="setDeposit()" class="deposits" [ngStyle]="{'background-color': (calc === 'deposits') ? 'aliceblue' : 'white'}">Deposit</div>
+            <div (click)="setLoan()" class="loans" [ngStyle]="{'background-color': (calc === 'loans') ? 'aliceblue' : 'white'}">Loans</div>
+            <div (click)="setSip()" class="sips" [ngStyle]="{'background-color': (calc === 'sips') ? 'aliceblue' : 'white'}">SIP</div>
+            <div (click)="setPipe()" class="pipes" [ngStyle]="{'background-color': (calc === 'pipes') ? 'aliceblue' : 'white'}">Pipes</div>
+        </div>
+        <div class="cacl-type">
+            @switch (calc) {
+                @case ("deposits") {
+                    <app-deposits></app-deposits>
+                }
+                @case ("loans") {
+                    <app-loans></app-loans>
+                }
+                @case ("sips") {
+                    <app-sip></app-sip>
+                }
+                @case ('pipes') {
+                    <app-pipes-demo></app-pipes-demo>
+                }  
+            }
+        </div>
+    </div>
+</div>

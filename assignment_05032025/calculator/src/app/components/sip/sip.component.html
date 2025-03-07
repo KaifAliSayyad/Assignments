@@ -1,0 +1,25 @@
+<div class="content">
+    <div class="heading">
+        <h2>SIP Calculator</h2>
+    </div>
+    <div class="form-container">
+        <div class="exact-input">
+            <div class="exact-amount">
+                <label>Enter the exact amount : </label>
+                <input type="number" [(ngModel)]="amount">
+            </div>
+            <div class="exact-tenure">
+                <label>Enter the Maturity Period (in Months) : </label>
+                        <input type="number" [(ngModel)]="duration">
+            </div>
+            <div class="roi">
+                <label>Enter the ROI (-25% - 25%) : </label>
+                        <input type="number" [(ngModel)]="roi">
+            </div>
+        </div>
+        <button (click)="calculate()">Calculate</button>
+        <div class="output" [style]="display">
+            <p>Returns : {{returns}}</p>
+        </div>
+    </div>
+</div>
