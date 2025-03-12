@@ -1,0 +1,49 @@
+.login-container {
+    background-color: aliceblue;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    color: cadetblue;
+    text-align: center;
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+    color: cadetblue;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid cadetblue;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: cadetblue;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  button:hover {
+    background-color: darkcyan;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+  }

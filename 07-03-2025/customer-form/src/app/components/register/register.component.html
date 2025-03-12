@@ -1,0 +1,41 @@
+<div class="register-container">
+    <h2>Register</h2>
+    <form [formGroup]="customerForm" (ngSubmit)="submitForm(customerForm.value)">
+      
+      <label for="id">ID:</label>
+      <input id="id" type="text" formControlName="id" />
+      <!-- <p>{{customerForm.controls['id'].touched}}</p>
+      <p>{{customerForm.controls['id'].invalid}}</p> -->
+      <div *ngIf="customerForm.controls['id'].invalid && customerForm.controls['id'].touched">
+        Invalid ID (must be 7 digits)
+      </div>
+  
+      <label for="username">Username:</label>
+      <input id="username" type="text" formControlName="username" />
+      <p></p>
+      <div *ngIf="customerForm.controls['username'].invalid && customerForm.controls['username'].touched">
+        Invalid Username (must be at least 5 characters)
+      </div>
+  
+      <label for="password">Password:</label>
+      <input id="password" type="password" formControlName="password" />
+      <div *ngIf="customerForm.controls['password'].invalid && customerForm.controls['password'].touched">
+        Password must include letters, numbers, and special characters
+      </div>
+  
+      <label for="confirmPassword">Confirm Password:</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <div *ngIf="customerForm.controls['confirmPassword'].invalid && customerForm.controls['confirmPassword'].touched">
+        Passwords do not match
+      </div>
+  
+      <label for="accountNo">Account No:</label>
+      <input id="accountNo" type="text" formControlName="accountNo" />
+      <div *ngIf="customerForm.controls['accountNo'].invalid && customerForm.controls['accountNo'].touched">
+        Invalid Account Number (must be at least 6 digits)
+      </div>
+  
+      <button type="submit" [disabled]="customerForm.invalid">Register</button>
+    </form>
+    </div>
+  

@@ -1,0 +1,15 @@
+<div class="content">
+    <div class="body">
+        <div class="toggle">
+            <div class="register" (click)="setRegister()" [style]="registerStyle">Register</div>
+            <div class="login" (click)="setLogin()" [style]="loginStyle">Login</div>
+        </div>
+        <div class="forms">
+            @if (isRegister) {
+                <app-register></app-register>
+            }@else {
+                <app-login></app-login>
+            }
+        </div>
+    </div>
+</div>

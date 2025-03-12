@@ -1,0 +1,159 @@
+/* General Container Styles */
+.content {
+    font-family: Arial, sans-serif;
+    min-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .heading {
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  hr {
+    margin: 20px 0;
+    border: 1px solid #ddd;
+  }
+  
+  /* Form and Input Fields */
+  .form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .name {
+    margin-bottom: 15px;
+  }
+  
+  .name label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .form-control {
+    padding: 10px;
+    width: 90%;
+    margin-top: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Radio Buttons */
+  .loan-type {
+    margin-bottom: 20px;
+  }
+  
+  .radio-option {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .radio-option label {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .radio-option span {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Inputs for Exact Amount and Tenure */
+  .exact-input {
+    margin-bottom: 20px;
+    width: 90%;
+  }
+  
+  .exact-amount,
+  .exact-tenure {
+    margin-bottom: 15px;
+  }
+  
+  .exact-amount label,
+  .exact-tenure label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  input[type="number"] {
+    padding: 10px;
+    width: 100%;
+    margin-top: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Button Styling */
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Output Styling */
+  .output {
+    margin-top: 20px;
+    display: none;
+    text-align: left;
+  }
+  
+  .output p {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .output p:first-child {
+    font-weight: bold;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 15px;
+    }
+  
+    .loan-type {
+      font-size: 14px;
+    }
+  
+    input[type="number"],
+    .form-control {
+      font-size: 14px;
+    }
+  
+    button {
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+  

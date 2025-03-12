@@ -1,0 +1,14 @@
+Registering
+------------
+Customer ID (Only digits with exact 7 numbers)
+username (Can't be empty and min 5 characters, no digits)
+password (can't be empty, min - 8 characters with 1Uppercase-1LowerCase-Special character)
+confirm (Should match with password)
+accountNo (mandatory, min 6 digits)
+ 
+Login
+------
+Customer ID
+password
+ 
+Welcome ! username
